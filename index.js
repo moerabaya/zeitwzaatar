@@ -1,48 +1,20 @@
-import express from "express";
-import { graphqlHTTP } from "express-graphql";
-import schema from "./schema";
+import express from 'express';
+import { graphqlHTTP } from 'express-graphql';
+import schema from './schema';
+import resolvers from './resolvers';
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("GraphQL Application");
+app.get('/', (req, res) => {
+    res.send('GraphQL is amazing!');
 });
 
-const rootValue = {
-  product: () => {
-    return {
-      id: 23124,
-      name: "widget",
-      description: "Beautiful widget to use in your garden",
-      price: 33.99,
-      soldout: false,
-      stores: [
-        {
-          store: "Pasadena",
-          amount: 3,
-        },
-        {
-          store: "Los Angeles",
-          amount: 1,
-        },
-      ],
-    };
-  },
-  createProduct: ({ input }) => {
-    let id = require("crypto").randomBytes(10).toString("hex");
-    productDatabase[id] = input;
-    return new Product(id);
-  },
-};
+const root = resolvers;
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema,
-    rootValue,
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: root,
     graphiql: true,
-  })
-);
-app.listen(8080, () =>
-  console.log("Running server on port localhost:8080/graphql")
-);
+}));
+
+app.listen(8080, () => console.log('Running server on port localhost:8080/graphql'));
