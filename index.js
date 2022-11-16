@@ -9,7 +9,30 @@ app.get("/", (req, res) => {
 });
 
 const rootValue = {
-  hello: () => "Hi, I am Moe",
+  product: () => {
+    return {
+      id: 23124,
+      name: "widget",
+      description: "Beautiful widget to use in your garden",
+      price: 33.99,
+      soldout: false,
+      stores: [
+        {
+          store: "Pasadena",
+          amount: 3,
+        },
+        {
+          store: "Los Angeles",
+          amount: 1,
+        },
+      ],
+    };
+  },
+  createProduct: ({ input }) => {
+    let id = require("crypto").randomBytes(10).toString("hex");
+    productDatabase[id] = input;
+    return new Product(id);
+  },
 };
 
 app.use(
