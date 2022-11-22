@@ -32,11 +32,26 @@ export const resolvers = {
       //   });
     });
   },
-  updateProduct: ({ id, input }) => {
+  updateProduct: ({ input }) => {
     return new Promise((resolve) => {
-      Widgets.findOneAndUpdate({ _id: id }, input, {}, (err, product) => {
+      Widgets.findOneAndUpdate(
+        { _id: input.id },
+        input,
+        {
+          new: true,
+        },
+        (err, product) => {
+          if (err) reject(err);
+          else resolve(product);
+        }
+      );
+    });
+  },
+  deleteProduct: ({ id }) => {
+    return new Promise((resolve) => {
+      Widgets.remove({ _id: id }, (err) => {
         if (err) reject(err);
-        else resolve(product);
+        else resolve(`Successfully deleted widget with id: ${id}`);
       });
     });
   },
