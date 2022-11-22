@@ -21,15 +21,15 @@ export const resolvers = {
 
     newWidget.id = newWidget._id;
     return new Promise((resolve) => {
-        newWidget.save((err)=>{
-            if (err) return reject(err);
-            else resolve(newWidget);
-        }))
-    // my approuch 
-    //   Widgets.create(input, function (err, small) {
-    //     if (err) return reject(err);
-    //     else resolve(small);
-    //   });
+      newWidget.save((err) => {
+        if (err) return reject(err);
+        else resolve(newWidget);
+      });
+      // my approuch
+      //   Widgets.create(input, function (err, small) {
+      //     if (err) return reject(err);
+      //     else resolve(small);
+      //   });
     });
   },
 };
