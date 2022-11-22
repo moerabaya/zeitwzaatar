@@ -6,7 +6,7 @@ const schema = buildSchema(`
         name: String
         description: String
         price: Float
-        soldout: Boolean
+        soldout: Soldout
         stores: [Store]!
     }
 
@@ -27,13 +27,19 @@ const schema = buildSchema(`
         name: String
         description: String
         price: Float
-        soldout: Boolean
+        soldout: Soldout
         stores: [StoreInput]!
     }
+
+    enum Soldout {
+        SOLDOUT
+        ONSALE
+    }
+
 
     type Mutation {
         createProduct(input: ProductInput): Product
     }
-`)
+`);
 
 export default schema;

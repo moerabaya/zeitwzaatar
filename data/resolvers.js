@@ -11,9 +11,26 @@ export const resolvers = {
     });
   },
   createProduct: ({ input }) => {
-    // let id = require('crypto').randomBytes(10).toString('hex');
-    // productDatabase[id] = input;
-    // return new Product(id, input);
+    const newWidget = Widgets({
+      name: input.name,
+      description: input.description,
+      price: input.price,
+      soldout: input.soldout,
+      stores: input.stores,
+    });
+
+    newWidget.id = newWidget._id;
+    return new Promise((resolve) => {
+        newWidget.save((err)=>{
+            if (err) return reject(err);
+            else resolve(newWidget);
+        }))
+    // my approuch 
+    //   Widgets.create(input, function (err, small) {
+    //     if (err) return reject(err);
+    //     else resolve(small);
+    //   });
+    });
   },
 };
 
