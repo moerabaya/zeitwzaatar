@@ -14,21 +14,23 @@ const Product = () => {
   const params = useParams();
 
   const fetchData = React.useCallback(() => {
-    const query = {
-      query: `
-      {
-        getProduct(id: "${params.id}") {
+    const query = `query($productId: ID!) {
+        getProduct(id: $productId) {
 					id
           name
           description
         }
       }
-    `,
-    };
+    `;
     fetch("/graphql", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(query),
+      body: JSON.stringify({
+        query,
+        variables: {
+          productId: params.id,
+        },
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
