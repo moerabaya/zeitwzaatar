@@ -20,6 +20,6 @@ app.use(
   })
 );
 
-app.listen(8080, () =>
-  console.log("Running server on port localhost:8080/graphql")
+app.listen(3001, () =>
+  console.log("Running server on port localhost:3001/graphql")
 );
