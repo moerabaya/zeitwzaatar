@@ -17,6 +17,7 @@ const schema = buildSchema(`
     type Query {
         getProduct(id: ID): Product
         getAllProducts: [Product]
+        getProductsByName(name: String): [Product]
     }
 
     input StoreInput {

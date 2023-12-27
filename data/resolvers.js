@@ -58,6 +58,22 @@ export const resolvers = {
       });
     });
   },
+  getProductsByName: ({ name }) => {
+    return new Promise((resolve) => {
+      Widgets.find(
+        {
+          name: {
+            $regex: name,
+            $options: "i",
+          },
+        },
+        (error, products) => {
+          if (error) reject(error);
+          resolve(products);
+        }
+      );
+    });
+  },
 };
 
 export default resolvers;
