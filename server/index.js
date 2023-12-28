@@ -1,8 +1,8 @@
 import express from "express";
 import { graphqlHTTP } from "express-graphql";
-import schema from "./data/schema";
-import resolvers from "./data/resolvers";
 import path from "path";
+import resolvers from "./data/resolvers";
+import schema from "./data/schema";
 
 const app = express();
 
