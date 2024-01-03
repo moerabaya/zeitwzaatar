@@ -1,5 +1,4 @@
 import { reject } from "lodash";
-import { Client } from "../cache";
 import { Widgets } from "./dbConnectors";
 
 export const resolvers = {
@@ -60,15 +59,6 @@ export const resolvers = {
     });
   },
   getProductsByName: async ({ name }) => {
-    const storageName = Buffer.from(name, "utf8").toString();
-    const value = await Client.get(`search_products:${storageName}`);
-
-    if (!!value) {
-      console.log("found cached data");
-      return Promise.resolve(JSON.parse(value));
-    }
-    console.log("doesn't have cache, returning data from mongodb");
-    // if (cache) return Promise.resolve(JSON.parse(c));
     return new Promise((resolve) => {
       Widgets.find(
         {
@@ -79,11 +69,6 @@ export const resolvers = {
         },
         async (error, products) => {
           if (error) reject(error);
-          await Client.setEx(
-            `search_products:${storageName}`,
-            60,
-            JSON.stringify(products)
-          );
           resolve(products);
         }
       );
