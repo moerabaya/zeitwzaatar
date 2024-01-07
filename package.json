@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/index.ts --exec ts-node"
+    "start": "(cd client && yarn start) & yarn dev",
+    "dev": "nodemon ./server/index.ts --exec ts-node"
   },
   "author": "",
   "license": "ISC",
