@@ -1,8 +1,8 @@
 import { reject } from "lodash";
-import { Widgets } from "./dbConnectors";
+import { Widgets } from "../../data/Widgets";
 import { Product } from "./types";
 
-export const resolvers = {
+export const ProductResolvers = {
   getProduct: ({ id }: { id: string }) => {
     return new Promise((resolve) => {
       Widgets.findById({ _id: id }, (err: Error, product: Product) => {
@@ -76,5 +76,3 @@ export const resolvers = {
     });
   },
 };
-
-export default resolvers;

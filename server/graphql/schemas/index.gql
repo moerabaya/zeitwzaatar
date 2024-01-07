@@ -1,0 +1,9 @@
+# index.graphql
+# NOTE: Possible to do with apollo
+# import "./product.graphql"
+
+# The schema definition itself
+schema {
+  query: Query
+  mutation: Mutation
+}

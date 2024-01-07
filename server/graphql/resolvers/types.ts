@@ -1,4 +1,4 @@
-declare global {}
+// TODO: Replace with graphql-codegen
 
 export enum Soldout {
   SOLDOUT,
