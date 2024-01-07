@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { graphqlHTTP } from "express-graphql";
 import path from "path";
 import resolvers from "./data/resolvers";
@@ -21,12 +21,12 @@ app.use(
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 // Handle GET requests to /api route
-app.get("/api", (req, res) => {
+app.get("/api", (_req: Request, res: Response) => {
   res.json({ message: "Hello from server!" });
 });
 
 // All other GET requests not handled before will return our React app
-app.get("*", (req, res) => {
+app.get("*", (_req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 

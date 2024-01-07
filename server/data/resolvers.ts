@@ -1,10 +1,11 @@
 import { reject } from "lodash";
 import { Widgets } from "./dbConnectors";
+import { Product } from "./types";
 
 export const resolvers = {
-  getProduct: ({ id }) => {
+  getProduct: ({ id }: { id: string }) => {
     return new Promise((resolve) => {
-      Widgets.findById({ _id: id }, (err, product) => {
+      Widgets.findById({ _id: id }, (err: Error, product: Product) => {
         if (err) reject(err);
         else resolve(product);
       });
@@ -13,8 +14,8 @@ export const resolvers = {
   getAllProducts: () => {
     return Widgets.find({});
   },
-  createProduct: ({ input }) => {
-    const newWidget = Widgets({
+  createProduct: ({ input }: { input: Product }) => {
+    const newWidget = new Widgets({
       name: input.name,
       description: input.description,
       price: input.price,
@@ -35,7 +36,7 @@ export const resolvers = {
       //   });
     });
   },
-  updateProduct: ({ input }) => {
+  updateProduct: ({ input }: { input: Product }) => {
     return new Promise((resolve) => {
       Widgets.findOneAndUpdate(
         { _id: input.id },
@@ -50,7 +51,7 @@ export const resolvers = {
       );
     });
   },
-  deleteProduct: ({ id }) => {
+  deleteProduct: ({ id }: { id: string }) => {
     return new Promise((resolve) => {
       Widgets.remove({ _id: id }, (err) => {
         if (err) reject(err);
@@ -58,7 +59,7 @@ export const resolvers = {
       });
     });
   },
-  getProductsByName: async ({ name }) => {
+  getProductsByName: async ({ name }: { name: string }) => {
     return new Promise((resolve) => {
       Widgets.find(
         {
@@ -67,7 +68,7 @@ export const resolvers = {
             $options: "i",
           },
         },
-        async (error, products) => {
+        async (error: Error, products: Product[]) => {
           if (error) reject(error);
           resolve(products);
         }
