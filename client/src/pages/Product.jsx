@@ -1,47 +1,22 @@
-import React, { useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { useQuery } from "@apollo/client";
 import CameraIcon from "@mui/icons-material/PhotoCamera";
+import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import React from "react";
 import { useParams } from "react-router-dom";
+import { GET_PRODUCT } from "../schemas/queries/getProduct";
 
 const Product = () => {
-  const [data, setData] = React.useState(null);
   const params = useParams();
-
-  const fetchData = React.useCallback(() => {
-    const query = `query($productId: ID!) {
-        getProduct(id: $productId) {
-					id
-          name
-          description
-        }
-      }
-    `;
-    fetch("/graphql", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        query,
-        variables: {
-          productId: params.id,
-        },
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data from server", data);
-        setData(data.data);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const { data, loading, error } = useQuery(GET_PRODUCT, {
+    variables: { id: params.id },
+  });
+  if (loading) return `...loading`;
   return (
     <>
       <AppBar position="relative">

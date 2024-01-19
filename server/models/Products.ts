@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const widgetSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
   },
@@ -21,6 +21,6 @@ const widgetSchema = new mongoose.Schema({
   },
 });
 
-const Widgets = mongoose.model("widget", widgetSchema, "widget");
+const Products = mongoose.model("product", productSchema);
 
-export { Widgets };
+export { Products };

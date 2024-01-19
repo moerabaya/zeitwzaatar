@@ -1,21 +1,21 @@
 import { reject } from "lodash";
-import { Widgets } from "../../data/Widgets";
+import { Products } from "../../models/Products";
 import { Product } from "./types";
 
 export const ProductResolvers = {
   getProduct: ({ id }: { id: string }) => {
     return new Promise((resolve) => {
-      Widgets.findById({ _id: id }, (err: Error, product: Product) => {
+      Products.findById({ _id: id }, (err: Error, product: Product) => {
         if (err) reject(err);
         else resolve(product);
       });
     });
   },
   getAllProducts: () => {
-    return Widgets.find({});
+    return Products.find({});
   },
   createProduct: ({ input }: { input: Product }) => {
-    const newWidget = new Widgets({
+    const newProduct = new Products({
       name: input.name,
       description: input.description,
       price: input.price,
@@ -23,14 +23,14 @@ export const ProductResolvers = {
       stores: input.stores,
     });
 
-    newWidget.id = newWidget._id;
+    newProduct.id = newProduct._id;
     return new Promise((resolve) => {
-      newWidget.save((err) => {
+      newProduct.save((err) => {
         if (err) return reject(err);
-        else resolve(newWidget);
+        else resolve(newProduct);
       });
       // my approuch
-      //   Widgets.create(input, function (err, small) {
+      //   Products.create(input, function (err, small) {
       //     if (err) return reject(err);
       //     else resolve(small);
       //   });
@@ -38,7 +38,7 @@ export const ProductResolvers = {
   },
   updateProduct: ({ input }: { input: Product }) => {
     return new Promise((resolve) => {
-      Widgets.findOneAndUpdate(
+      Products.findOneAndUpdate(
         { _id: input.id },
         input,
         {
@@ -53,15 +53,15 @@ export const ProductResolvers = {
   },
   deleteProduct: ({ id }: { id: string }) => {
     return new Promise((resolve) => {
-      Widgets.remove({ _id: id }, (err) => {
+      Products.remove({ _id: id }, (err) => {
         if (err) reject(err);
-        else resolve(`Successfully deleted widget with id: ${id}`);
+        else resolve(`Successfully deleted products with id: ${id}`);
       });
     });
   },
   getProductsByName: async ({ name }: { name: string }) => {
     return new Promise((resolve) => {
-      Widgets.find(
+      Products.find(
         {
           name: {
             $regex: name,

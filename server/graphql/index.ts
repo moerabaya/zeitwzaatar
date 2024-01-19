@@ -7,10 +7,11 @@ const productSchema = readFileSync(
   join(__dirname, "schemas/product.gql"),
   "utf-8"
 );
+const uesrSchema = readFileSync(join(__dirname, "schemas/user.gql"), "utf-8");
 const indexSchema = readFileSync(join(__dirname, "schemas/index.gql"), "utf-8");
 
 const schema = makeExecutableSchema({
-  typeDefs: [indexSchema, productSchema],
+  typeDefs: [indexSchema, productSchema, uesrSchema],
 });
 
 export { resolvers, schema };

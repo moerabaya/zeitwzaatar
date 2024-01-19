@@ -15,3 +15,13 @@ export type Product = {
   soldout: Soldout;
   stores: Store[];
 };
+
+export type User = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  username: string;
+  email: string;
+  password: string;
+  avatar?: string;
+};

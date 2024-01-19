@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Request, Response } from "express";
 import { graphqlHTTP } from "express-graphql";
 import path from "path";
@@ -8,11 +9,13 @@ const app = express();
 
 const root = resolvers;
 
+app.use(cors());
+
 app.use(
   "/graphql",
   graphqlHTTP({
     schema: schema,
-    rootValue: root,
+    rootValue: resolvers,
     graphiql: true,
   })
 );
