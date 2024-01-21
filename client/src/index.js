@@ -1,15 +1,10 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import client from "./config/apollo";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-
-const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql",
-  cache: new InMemoryCache(),
-  headers: { "content-type": "application/json" },
-});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,7 +12,6 @@ root.render(
     <ApolloProvider client={client}>
       <App />
     </ApolloProvider>
-    ,
   </React.StrictMode>
 );
 

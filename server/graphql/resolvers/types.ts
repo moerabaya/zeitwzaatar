@@ -25,3 +25,8 @@ export type User = {
   password: string;
   avatar?: string;
 };
+
+export type LoginInput = {
+  email: string;
+  password: string;
+};

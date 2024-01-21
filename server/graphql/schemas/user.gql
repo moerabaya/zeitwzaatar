@@ -16,10 +16,18 @@ input UserInput {
   avatar: String
 }
 
+input LoginInput {
+  email: String
+  password: String
+}
+
 type Query {
-  users: [User]
+  allUsers: [User]
+  user: User
 }
 
 type Mutation {
   register(input: UserInput): User
+  login(input: LoginInput): User
+  logout: Boolean
 }

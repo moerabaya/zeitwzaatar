@@ -1,6 +1,9 @@
+import { User } from "../../controllers/user";
 import { ProductResolvers } from "./products";
-import { UserResolvers } from "./users";
 
-export const resolvers = { ...ProductResolvers, ...UserResolvers };
+export const resolvers = {
+  ...ProductResolvers,
+  ...new User().getResolvers(),
+};
 
 export default resolvers;

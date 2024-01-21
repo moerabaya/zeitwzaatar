@@ -1,73 +1,73 @@
 import { useQuery } from "@apollo/client";
-import CameraIcon from "@mui/icons-material/PhotoCamera";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import AddIcon from "@mui/icons-material/Add";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {
+  AspectRatio,
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Typography,
+  useColorScheme,
+} from "@mui/joy";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { GET_PRODUCT } from "../schemas/queries/getProduct";
 
-const Product = () => {
+export const Product = () => {
   const params = useParams();
+  const { mode } = useColorScheme();
   const { data, loading, error } = useQuery(GET_PRODUCT, {
     variables: { id: params.id },
   });
   if (loading) return `...loading`;
   return (
-    <>
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            {data?.getProduct?.name ?? "loading..."}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        {/* Hero unit */}
+    <Grid
+      container
+      minHeight={"100vh"}
+      sx={{ backgroundColor: mode === "dark" ? "black" : "primary.50" }}
+    >
+      <Grid item md={6}>
+        <AspectRatio minHeight="100vh">
+          <img
+            component="img"
+            src={"https://source.unsplash.com/random?olive-oil"}
+          />
+        </AspectRatio>
+      </Grid>
+      <Grid item md={6} height={"100%"}>
         <Box
           sx={{
-            bgcolor: "background.paper",
+            p: 5,
             pt: 8,
             pb: 6,
           }}
         >
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
+          <Typography color="text.primary" gutterBottom level="h1">
+            {data?.getProduct?.name}
+          </Typography>
+          <Typography
+            variant="h5"
+            color="text.secondary"
+            maxWidth={"80%"}
+            paragraph
+          >
+            {data?.getProduct?.description}
+          </Typography>
+          <Stack sx={{ pt: 4 }} direction="row" spacing={2}>
+            <Button startDecorator={<AddIcon />} variant="soft" color="neutral">
+              Add to cart
+            </Button>
+            <Button
+              startDecorator={<FavoriteBorderIcon />}
+              variant="outlined"
+              color="neutral"
             >
-              {data?.getProduct?.name ?? "loading..."}
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              color="text.secondary"
-              paragraph
-            >
-              {data?.getProduct?.description ?? "loading..."}
-            </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Edit</Button>
-            </Stack>
-          </Container>
+              Wishlist
+            </Button>
+          </Stack>
         </Box>
-      </main>
-    </>
+      </Grid>
+    </Grid>
   );
 };
-
-export default Product;

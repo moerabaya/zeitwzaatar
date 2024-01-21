@@ -1,15 +1,25 @@
+import { useMutation } from "@apollo/client";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import Container from "@mui/material/Container";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControl,
+  FormLabel,
+  Grid,
+  Input,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/joy";
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/user";
+import { LOGIN } from "../schemas/mutations/login";
 
 function Copyright(props) {
   return (
@@ -29,82 +39,118 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [login, { loading, error }] = useMutation(LOGIN);
+  const navigate = useNavigate();
+  const { refetch } = useUser();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      await login({
+        variables: {
+          email: data.email,
+          password: data.password,
+        },
+      }).then(() => {
+        refetch();
+        navigate("/", {
+          replace: true,
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/forgot-password" variant="body2">
-                Forgot password?
-              </Link>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Container component="main" maxWidth="xs">
+        <Stack sx={{ mt: 8 }}>
+          <Box>
+            <Avatar variant="outlined" sx={{ m: "1em auto" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography textAlign={"center"} level="h3" mt={1}>
+              Sign in
+            </Typography>
+          </Box>
+          <Stack gap={2} sx={{ mt: 4 }}>
+            <FormControl required>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                name="email"
+                error={!!errors?.email?.message}
+                errorMessage={errors?.email?.message}
+                {...register("email", {
+                  required: true,
+                })}
+              />
+            </FormControl>
+            <FormControl required>
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                name="password"
+                error={!!errors?.password?.message}
+                errorMessage={errors?.password?.message}
+                {...register("password", {
+                  required: true,
+                })}
+              />
+            </FormControl>
+            <Stack gap={4} sx={{ mt: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Checkbox size="sm" label="Remember me" name="persistent" />
+              </Box>
+              {!!error && (
+                <Box marginTop="10px">
+                  <Alert variant="filled" severity="error">
+                    {error.message}
+                  </Alert>
+                </Box>
+              )}
+
+              <Button
+                type="submit"
+                loading={loading}
+                loadingPosition="start"
+                disabled={loading}
+                onClick={handleSubmit(onSubmit)}
+                fullWidth
+              >
+                Sign in
+              </Button>
+            </Stack>
+          </Stack>
+          <Box sx={{ mt: 2 }}>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/forgot-password" level="title-sm" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/signup" level="title-sm">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
-    </Container>
+          </Box>
+        </Stack>
+        <Copyright level="title-sm" sx={{ mt: 5, mb: 4 }} />
+      </Container>
+    </form>
   );
 }
