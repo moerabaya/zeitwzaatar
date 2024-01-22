@@ -1,4 +1,4 @@
-# graphql
+# Zait w Zaatar
 
 ### Start The Application
 
