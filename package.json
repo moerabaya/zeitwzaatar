@@ -47,6 +47,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/lodash": "~4.14.202",
     "@types/nodemon": "~1.19.6",
+    "dotenv": "^16.3.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

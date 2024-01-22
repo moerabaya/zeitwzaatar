@@ -1,13 +1,19 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 
 import "./App.css";
 import Login from "./pages/Login";
 
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import Navigation from "./components/Navigation";
-import { UserProvider } from "./context/user";
+import { UserProvider, useUser } from "./context/user";
 import Home from "./pages/Home";
 import { Product } from "./pages/Product";
 import SignUp from "./pages/Signup";
@@ -36,18 +42,18 @@ const palette = {
     800: "#243116",
     900: "#161d0d",
   },
-  neutral: {
-    50: "#fdf8f4",
-    100: "#faeade",
-    200: "#f3cfb2",
-    300: "#ecb386",
-    400: "#e18a44",
-    500: "#d17021",
-    600: "#8f4c17",
-    700: "#633510",
-    800: "#371d09",
-    900: "#0b0602",
-  },
+  // neutral: {
+  //   50: "#fdf8f4",
+  //   100: "#faeade",
+  //   200: "#f3cfb2",
+  //   300: "#ecb386",
+  //   400: "#e18a44",
+  //   500: "#d17021",
+  //   600: "#8f4c17",
+  //   700: "#633510",
+  //   800: "#371d09",
+  //   900: "#0b0602",
+  // },
 };
 
 const bootstrapTheme = extendTheme({
@@ -68,9 +74,10 @@ function App() {
             <Navigation />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/product/:id" element={<Product />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route element={<Authetnicate />}></Route>
             </Routes>
           </BrowserRouter>
         </UserProvider>
@@ -80,3 +87,13 @@ function App() {
 }
 
 export { App as default, theme };
+
+const Authetnicate = () => {
+  const navigate = useNavigate();
+  const { isAuth } = useUser();
+  if (!isAuth)
+    return navigate("/login", {
+      replace: true,
+    });
+  return <Outlet />;
+};

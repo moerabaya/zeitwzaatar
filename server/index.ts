@@ -1,5 +1,6 @@
 import cookieSession from "cookie-session";
 import cors from "cors";
+import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import { graphqlHTTP } from "express-graphql";
 import { GraphQLError } from "graphql";
@@ -7,6 +8,8 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import "./config/dbConnection";
 import { ErrorCode, ServerError } from "./controllers/server-error";
 import { resolvers, schema } from "./graphql/index";
+
+dotenv.config();
 
 export const app = express();
 
@@ -30,7 +33,10 @@ app.use(cors());
 app.use(
   cookieSession({
     name: "session",
-    keys: ["key-1", "key-2"],
+    keys: [
+      process.env["SIGN_SESSION_KEY"] as string,
+      process.env["VERIFY_SESSION_KEY"] as string,
+    ],
   })
 );
 

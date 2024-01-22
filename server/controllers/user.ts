@@ -1,6 +1,10 @@
 import { compare, genSalt, hash } from "bcrypt";
 import { Context } from "..";
-import { LoginInput, User as UserInput } from "../graphql/resolvers/types";
+import {
+  ForgetPassword,
+  LoginInput,
+  User as UserInput,
+} from "../graphql/resolvers/types";
 import { Users } from "../models/User";
 import { ServerError } from "./server-error";
 
@@ -11,7 +15,7 @@ export class User {
     return new Promise(async (resolve, reject) => {
       const salt = await genSalt(10);
       const hashedPassword = await hash(input.password, salt);
-      console.log(input.password);
+
       const newUser = new Users({
         firstname: input.firstname,
         lastname: input.lastname,
@@ -29,6 +33,29 @@ export class User {
     });
   }
 
+  async forgetPassword({ input }: { input: ForgetPassword }) {
+    const { email, password, newPassword } = input;
+    return new Promise(async (resolve, reject) => {
+      const salt = await genSalt(10);
+      const hashPassword = await hash(newPassword, salt);
+
+      Users.findOne({ email }, async (error: Error, user: UserInput) => {
+        if (error) reject(error);
+        const passwordMatch = await compare(password, user.password);
+        if (passwordMatch) {
+          Users.findOneAndUpdate(
+            { email },
+            { password: hashPassword },
+            async (error: Error, user: UserInput) => {
+              if (error) reject(error);
+              resolve(user);
+            }
+          );
+        } else reject(new ServerError("PASSWORD_DONT_MATCH"));
+      });
+    });
+  }
+
   async login({ input }: { input: LoginInput }, context: Context) {
     const { email, password } = input;
     return new Promise((resolve, reject) => {
@@ -36,7 +63,7 @@ export class User {
       Users.findOne({ email }, async (error: Error, user: UserInput) => {
         if (error) return reject(error);
         if (!user) return reject(new ServerError("ACCOUNT_NOT_FOUND"));
-        console.log("user", user);
+
         const passwordMatch = await compare(password, user.password);
         if (passwordMatch) {
           // Set user data in session
@@ -56,7 +83,6 @@ export class User {
 
   async getUser(_: any, { req }: Context) {
     const userId = req.session.userId;
-
     return await Users.findById(userId);
   }
 
@@ -71,10 +97,10 @@ export class User {
       register: this.register,
       allUsers: this.users,
       user: this.getUser,
+      forgetPassword: this.forgetPassword,
     };
   }
 }
-
 function generateUsername(firstName: string, lastName: string) {
   // Extract the first three characters of each name
   const firstChars = firstName.slice(0, 3).toLowerCase();

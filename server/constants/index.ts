@@ -3,6 +3,11 @@ export const Errors = {
     message: "User already exists.",
     statusCode: 403,
   },
+  PASSWORD_DONT_MATCH: {
+    message:
+      "The password you entered don't match with existing account password",
+    statusCode: 401,
+  },
   ACCOUNT_NOT_FOUND: {
     message:
       "Account not found. Please check your email or register for a new account.",

@@ -3,7 +3,6 @@ type User {
   firstname: String
   lastname: String
   email: String
-  password: String
   avatar: String
 }
 
@@ -21,6 +20,12 @@ input LoginInput {
   password: String
 }
 
+input ForgetPassword {
+  email: String
+  password: String
+  newPassword: String
+}
+
 type Query {
   allUsers: [User]
   user: User
@@ -29,5 +34,6 @@ type Query {
 type Mutation {
   register(input: UserInput): User
   login(input: LoginInput): User
+  forgetPassword(input: ForgetPassword): User
   logout: Boolean
 }

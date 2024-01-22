@@ -55,14 +55,10 @@ export const Product = () => {
             {data?.getProduct?.description}
           </Typography>
           <Stack sx={{ pt: 4 }} direction="row" spacing={2}>
-            <Button startDecorator={<AddIcon />} variant="soft" color="neutral">
+            <Button startDecorator={<AddIcon />} variant="solid">
               Add to cart
             </Button>
-            <Button
-              startDecorator={<FavoriteBorderIcon />}
-              variant="outlined"
-              color="neutral"
-            >
+            <Button startDecorator={<FavoriteBorderIcon />} variant="outlined">
               Wishlist
             </Button>
           </Stack>
