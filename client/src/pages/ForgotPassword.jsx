@@ -1,11 +1,11 @@
 import { useMutation } from "@apollo/client";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Alert,
   Avatar,
   Box,
   Button,
-  Checkbox,
   Container,
   FormControl,
   FormLabel,
@@ -19,8 +19,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../context/snackbar";
-import { useUser } from "../context/user";
-import { LOGIN } from "../schemas/mutations/login";
+import { FORGOT_PASSWORD } from "../schemas/mutations/forgotPassowrd";
 
 function Copyright(props) {
   return (
@@ -40,15 +39,16 @@ function Copyright(props) {
   );
 }
 
-export default function SignIn() {
-  const [login, { loading, error }] = useMutation(LOGIN);
-  const { user, refetch } = useUser();
+export default function ForgotPassword() {
+  const [forgotPassword, { loading, error }] = useMutation(FORGOT_PASSWORD);
+  const navigate = useNavigate();
+
   const { show } = useSnackbar({
-    message: `Welcome back ${user?.firstname}`,
+    message: "Your password has been successfully updated",
     color: "primary",
     variant: "soft",
   });
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -57,14 +57,14 @@ export default function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-      await login({
+      await forgotPassword({
         variables: {
           email: data.email,
           password: data.password,
+          newPassword: data.newPassword,
         },
       }).then(() => {
-        refetch();
-        navigate("/", {
+        navigate("/login", {
           replace: true,
         });
         show();
@@ -83,7 +83,7 @@ export default function SignIn() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography textAlign={"center"} level="h3" mt={1}>
-              Sign in
+              Forgot Password
             </Typography>
           </Box>
           <Stack gap={2} sx={{ mt: 4 }}>
@@ -111,16 +111,19 @@ export default function SignIn() {
                 })}
               />
             </FormControl>
-            <Stack gap={4} sx={{ mt: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Checkbox size="sm" label="Remember me" name="persistent" />
-              </Box>
+            <FormControl required>
+              <FormLabel>New password</FormLabel>
+              <Input
+                type="password"
+                name="newPassword"
+                error={!!errors?.newPassword?.message}
+                errorMessage={errors?.newPassword?.message}
+                {...register("newPassword", {
+                  required: true,
+                })}
+              />
+            </FormControl>
+            <Stack gap={4} sx={{ mt: 1 }}>
               {!!error && (
                 <Box marginTop="10px">
                   <Alert variant="filled" severity="error">
@@ -137,20 +140,16 @@ export default function SignIn() {
                 onClick={handleSubmit(onSubmit)}
                 fullWidth
               >
-                Sign in
+                Submit
               </Button>
             </Stack>
           </Stack>
           <Box sx={{ mt: 2 }}>
             <Grid container>
               <Grid item xs>
-                <Link href="/forgot-password" level="title-sm" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" level="title-sm">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/login" level="title-sm" variant="body2">
+                  <KeyboardBackspaceIcon sx={{ marginInlineEnd: 1 }} /> Back to
+                  sign in
                 </Link>
               </Grid>
             </Grid>

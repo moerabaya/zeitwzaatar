@@ -11,6 +11,8 @@ import Input from "@mui/joy/Input";
 import Link from "@mui/joy/Link";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "../context/snackbar";
 import { REGISTER } from "../schemas/mutations/register";
 
 function Copyright(props) {
@@ -33,6 +35,13 @@ function Copyright(props) {
 
 export default function SignUp() {
   const [mutation, { loading, error, data }] = useMutation(REGISTER);
+  const navigate = useNavigate();
+
+  const { show } = useSnackbar({
+    message: "You have sucessfully sign up for Zeit & Zaatar",
+    color: "primary",
+    variant: "soft",
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -46,6 +55,8 @@ export default function SignUp() {
           lastname: data.get("lastName"),
         },
       });
+      show();
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -148,6 +159,8 @@ export default function SignUp() {
               fullWidth
               variant="solid"
               sx={{ mt: 3, mb: 2 }}
+              loading={loading}
+              loadingPosition="start"
             >
               Sign Up
             </Button>

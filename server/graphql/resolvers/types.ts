@@ -30,7 +30,7 @@ export type LoginInput = {
   email: string;
   password: string;
 };
-export type ForgetPassword = {
+export type ForgotPassword = {
   email: string;
   password: string;
   newPassword: string;

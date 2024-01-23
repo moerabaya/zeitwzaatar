@@ -11,23 +11,13 @@ import "./App.css";
 import Login from "./pages/Login";
 
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
-import { ThemeProvider, createTheme } from "@mui/material";
 import Navigation from "./components/Navigation";
+import { SnackbarProvider } from "./context/snackbar";
 import { UserProvider, useUser } from "./context/user";
+import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import { Product } from "./pages/Product";
 import SignUp from "./pages/Signup";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1b5e20",
-    },
-    secondary: {
-      main: "#1b5e20",
-    },
-  },
-});
 
 const palette = {
   primary: {
@@ -65,8 +55,8 @@ const bootstrapTheme = extendTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssVarsProvider theme={bootstrapTheme}>
+    <CssVarsProvider theme={bootstrapTheme}>
+      <SnackbarProvider>
         <CssBaseline />
         <UserProvider>
           {/* <CssBaseline /> */}
@@ -76,17 +66,18 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<Authetnicate />}></Route>
             </Routes>
           </BrowserRouter>
         </UserProvider>
-      </CssVarsProvider>
-    </ThemeProvider>
+      </SnackbarProvider>
+    </CssVarsProvider>
   );
 }
 
-export { App as default, theme };
+export { App as default };
 
 const Authetnicate = () => {
   const navigate = useNavigate();

@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const isAuth = !!data && !!data.user;
   return (
     <UserContext.Provider
-      value={{ isAuth, user: data?.user ?? null, loading, refetch }}
+      value={{ isAuth, user: data?.user ?? null, loading, error, refetch }}
     >
       {children}
     </UserContext.Provider>

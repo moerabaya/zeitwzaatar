@@ -1,7 +1,7 @@
 import { compare, genSalt, hash } from "bcrypt";
 import { Context } from "..";
 import {
-  ForgetPassword,
+  ForgotPassword,
   LoginInput,
   User as UserInput,
 } from "../graphql/resolvers/types";
@@ -33,7 +33,7 @@ export class User {
     });
   }
 
-  async forgetPassword({ input }: { input: ForgetPassword }) {
+  async forgotPassword({ input }: { input: ForgotPassword }) {
     const { email, password, newPassword } = input;
     return new Promise(async (resolve, reject) => {
       const salt = await genSalt(10);
@@ -97,7 +97,7 @@ export class User {
       register: this.register,
       allUsers: this.users,
       user: this.getUser,
-      forgetPassword: this.forgetPassword,
+      forgotPassword: this.forgotPassword,
     };
   }
 }

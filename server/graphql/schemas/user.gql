@@ -20,7 +20,7 @@ input LoginInput {
   password: String
 }
 
-input ForgetPassword {
+input ForgotPassword {
   email: String
   password: String
   newPassword: String
@@ -34,6 +34,6 @@ type Query {
 type Mutation {
   register(input: UserInput): User
   login(input: LoginInput): User
-  forgetPassword(input: ForgetPassword): User
+  forgotPassword(input: ForgotPassword): User
   logout: Boolean
 }
