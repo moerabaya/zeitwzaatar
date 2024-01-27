@@ -1,0 +1,23 @@
+input CartInput {
+  id: ID
+  quantity: Int
+}
+
+type CartItem {
+  id: ID
+  quantity: Int
+  name: String
+  description: String
+  price: Float
+  soldout: Soldout
+  stores: [Store]!
+}
+
+type Query {
+  getAllCartItems: [CartItem]
+}
+
+type Mutation {
+  addToCart(input: CartInput): [CartItem]
+  removeFromCart(input: CartInput): [CartItem]
+}

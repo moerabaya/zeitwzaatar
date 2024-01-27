@@ -35,3 +35,8 @@ export type ForgotPassword = {
   password: string;
   newPassword: string;
 };
+
+export type CartInput = {
+  id: string;
+  quantity: number;
+};

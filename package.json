@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "(cd client && yarn start) & yarn dev",
-    "dev": "nodemon ./server/index.ts --exec ts-node"
+    "dev": "nodemon"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +28,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.7.2",
     "nodemon": "^3.0.2",
+    "ramda": "^0.29.1",
     "redis": "^4.6.12",
     "sequelize": "^6.25.7",
     "sqlite3": "^5.1.2"

@@ -3,6 +3,14 @@ export const Errors = {
     message: "User already exists.",
     statusCode: 403,
   },
+  PRODUCT_DOESNT_EXIST: {
+    message: "Product doesn't exist.",
+    statusCode: 404,
+  },
+  CART_DOESNT_EXIST: {
+    message: "Cart doesn't exist.",
+    statusCode: 404,
+  },
   PASSWORD_DONT_MATCH: {
     message:
       "The password you entered don't match with existing account password",

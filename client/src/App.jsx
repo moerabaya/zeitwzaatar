@@ -11,7 +11,7 @@ import "./App.css";
 import Login from "./pages/Login";
 
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
-import Navigation from "./components/Navigation";
+import { Navigation } from "./components/Navigation";
 import { SnackbarProvider } from "./context/snackbar";
 import { UserProvider, useUser } from "./context/user";
 import ForgotPassword from "./pages/ForgotPassword";

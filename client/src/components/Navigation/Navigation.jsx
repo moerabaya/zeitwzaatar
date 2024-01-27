@@ -16,7 +16,6 @@ import Tooltip from "@mui/joy/Tooltip";
 import Typography from "@mui/joy/Typography";
 import React from "react";
 
-import BookRoundedIcon from "@mui/icons-material/BookRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
@@ -26,8 +25,9 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/user";
+import { Link } from "react-router-dom";
+import { useUser } from "../../context/user";
+import { Cart } from "./Cart";
 
 function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -64,7 +64,6 @@ const Navigation = () => {
   const [open, setOpen] = React.useState(false);
   const { isAuth, loading, user } = useUser();
   const { mode } = useColorScheme();
-  const navigate = useNavigate();
 
   return (
     <Box
@@ -189,29 +188,7 @@ const Navigation = () => {
             },
           }}
         />
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          sx={{
-            display: { xs: "inline-flex", sm: "none" },
-            alignSelf: "center",
-          }}
-        >
-          <SearchRoundedIcon />
-        </IconButton>
-        <Tooltip title="Joy UI overview" variant="outlined">
-          <IconButton
-            size="sm"
-            variant="plain"
-            color="neutral"
-            component="a"
-            href="/blog/first-look-at-joy/"
-            sx={{ alignSelf: "center" }}
-          >
-            <BookRoundedIcon />
-          </IconButton>
-        </Tooltip>
+        <Cart />
         <ColorSchemeToggle />
         <Dropdown>
           <MenuButton

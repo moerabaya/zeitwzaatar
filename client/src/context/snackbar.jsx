@@ -8,10 +8,10 @@ export const SnackbarProvider = ({ children }) => {
   const push = (args) => setSnackbars((snackbars) => [...snackbars, args]);
   const remove = (id) =>
     setSnackbars((snackbars) => snackbars.filter((item) => item.id === id));
-  const show = ({ id, timeout = 3000 }) => {
+  const show = ({ id, timeout = 3000, ...args }) => {
     setSnackbars((snackbars) =>
       snackbars?.map((item) =>
-        item.id === id ? { ...item, open: true } : item
+        item.id === id ? { ...item, open: true, ...args } : item
       )
     );
 
@@ -45,11 +45,11 @@ export const SnackbarProvider = ({ children }) => {
 };
 
 export const useSnackbar = ({
-  message,
+  message = "",
   defaultOpen = false,
   timeout = 3000,
   ...args
-}) => {
+} = {}) => {
   const id = useId();
   const {
     push,
@@ -70,7 +70,7 @@ export const useSnackbar = ({
     };
   }, []);
 
-  const show = () => showSnackbar({ id, timeout });
+  const show = (msg = message) => showSnackbar({ id, timeout, message: msg });
   const hide = () => hideSnackbar(id);
 
   return {
