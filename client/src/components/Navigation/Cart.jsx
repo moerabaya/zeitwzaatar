@@ -1,6 +1,6 @@
 import { Add, Remove, ShoppingCart } from "@mui/icons-material";
 
-import { Input, List, ListItem } from "@mui/joy";
+import { Input, ListDivider, ListItem, MenuItem } from "@mui/joy";
 import Box from "@mui/joy/Box";
 import Dropdown from "@mui/joy/Dropdown";
 import IconButton from "@mui/joy/IconButton";
@@ -42,20 +42,27 @@ export const Cart = () => {
           gap: 1,
         }}
       >
-        <List
-          aria-labelledby="ellipsis-list-demo"
-          sx={{ "--ListItemDecorator-size": "56px" }}
+        <MenuItem
+          disabled
+          xs={{ display: "none" }}
+          color={"neutral"}
+          style={{
+            height: 0,
+            padding: 0,
+            margin: 0,
+            color: "var(--variant-plainColor, rgba(undefined / 1))",
+          }}
         >
-          {!loading && data?.getAllCartItems?.length ? (
-            data?.getAllCartItems.map((item) => <CartItem item={item} />)
-          ) : (
-            <ListItem
-              sx={{ minHeight: 200, minWidth: 200, textAlign: "center" }}
-            >
-              Empty cart
-            </ListItem>
-          )}
-        </List>
+          Shopping Cart
+        </MenuItem>
+        <ListDivider />
+        {!loading && data?.getAllCartItems?.length ? (
+          data?.getAllCartItems.map((item) => <CartItem item={item} />)
+        ) : (
+          <ListItem sx={{ minHeight: 200, minWidth: 200, textAlign: "center" }}>
+            Empty cart
+          </ListItem>
+        )}
       </Menu>
     </Dropdown>
   );
@@ -72,6 +79,7 @@ const CartItem = ({ item }) => {
         id,
         quantity,
       },
+      refetchQueries: [GET_ALL_CART_ITEMS],
     });
   };
   const addCartItem = (id, quantity = 1) => {
@@ -92,7 +100,6 @@ const CartItem = ({ item }) => {
           id: item.id,
           quantity: value,
         },
-        refetchQueries: [GET_ALL_CART_ITEMS],
       });
     }
     if (value < 0) {
