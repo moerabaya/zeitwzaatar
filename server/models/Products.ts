@@ -19,6 +19,13 @@ const productSchema = new mongoose.Schema({
   stores: {
     type: Array,
   },
+  categories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+  ],
 });
 
 const Products = mongoose.model("product", productSchema);

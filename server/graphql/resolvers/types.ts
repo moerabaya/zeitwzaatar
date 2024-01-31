@@ -14,6 +14,7 @@ export type Product = {
   price: number;
   soldout: Soldout;
   stores: Store[];
+  categories: [CategoryInput];
 };
 
 export type User = {
@@ -39,4 +40,9 @@ export type ForgotPassword = {
 export type CartInput = {
   id: string;
   quantity: number;
+};
+
+export type CategoryInput = {
+  id: string;
+  name: string;
 };

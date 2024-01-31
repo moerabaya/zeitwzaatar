@@ -1,78 +1,95 @@
-import { reject } from "lodash";
+import Category from "../../models/Categories";
 import { Products } from "../../models/Products";
 import { Product } from "./types";
 
-export const ProductResolvers = {
-  getProduct: ({ id }: { id: string }) => {
-    return new Promise((resolve) => {
-      Products.findById({ _id: id }, (err: Error, product: Product) => {
-        if (err) reject(err);
-        else resolve(product);
-      });
-    });
-  },
-  getAllProducts: () => {
-    return Products.find({});
-  },
-  createProduct: ({ input }: { input: Product }) => {
-    const newProduct = new Products({
-      name: input.name,
-      description: input.description,
-      price: input.price,
-      soldout: input.soldout,
-      stores: input.stores,
-    });
+export class ProductResolvers {
+  constructor() {
+    return {
+      getProduct: this.getProduct,
+      getAllProducts: this.getAllProducts,
+      createProduct: this.createProduct,
+      updateProduct: this.updateProduct,
+      deleteProduct: this.deleteProduct,
+      getProductsByName: this.getProductsByName,
+    };
+  }
 
-    newProduct.id = newProduct._id;
-    return new Promise((resolve) => {
-      newProduct.save((err) => {
-        if (err) return reject(err);
-        else resolve(newProduct);
+  async getProduct({ id }: { id: string }) {
+    try {
+      const product = await Products.findById(id).exec();
+      if (!product) {
+        throw new Error(`Product with id ${id} not found`);
+      }
+      const categories = await Category.find({
+        _id: { $in: product.categories },
       });
-      // my approuch
-      //   Products.create(input, function (err, small) {
-      //     if (err) return reject(err);
-      //     else resolve(small);
-      //   });
-    });
-  },
-  updateProduct: ({ input }: { input: Product }) => {
-    return new Promise((resolve) => {
-      Products.findOneAndUpdate(
+      return { ...JSON.parse(JSON.stringify(product)), categories };
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to fetch product: ${error.message}`);
+    }
+  }
+
+  async getAllProducts() {
+    return Products.find({}).exec();
+  }
+
+  async createProduct({ input }: { input: Product }) {
+    try {
+      const newProduct = new Products({
+        name: input.name,
+        description: input.description,
+        price: input.price,
+        soldout: input.soldout,
+        stores: input.stores,
+      });
+      const savedProduct = await newProduct.save();
+      return savedProduct;
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to create product: ${error.message}`);
+    }
+  }
+
+  async updateProduct({ input }: { input: Product }) {
+    try {
+      const updatedProduct = await Products.findOneAndUpdate(
         { _id: input.id },
         input,
-        {
-          new: true,
-        },
-        (err, product) => {
-          if (err) reject(err);
-          else resolve(product);
-        }
-      );
-    });
-  },
-  deleteProduct: ({ id }: { id: string }) => {
-    return new Promise((resolve) => {
-      Products.remove({ _id: id }, (err) => {
-        if (err) reject(err);
-        else resolve(`Successfully deleted products with id: ${id}`);
+        { new: true }
+      ).exec();
+      if (!updatedProduct) {
+        throw new Error(`Product with id ${input.id} not found`);
+      }
+      const categories = await Category.find({
+        _id: { $in: updatedProduct.categories },
       });
-    });
-  },
-  getProductsByName: async ({ name }: { name: string }) => {
-    return new Promise((resolve) => {
-      Products.find(
-        {
-          name: {
-            $regex: name,
-            $options: "i",
-          },
-        },
-        async (error: Error, products: Product[]) => {
-          if (error) reject(error);
-          resolve(products);
-        }
-      );
-    });
-  },
-};
+      return { ...JSON.parse(JSON.stringify(updatedProduct)), categories };
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to update product: ${error.message}`);
+    }
+  }
+
+  async deleteProduct({ id }: { id: string }) {
+    try {
+      await Products.deleteOne({ _id: id }).exec();
+      return `Successfully deleted product with id: ${id}`;
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to delete product: ${error.message}`);
+    }
+  }
+
+  async getProductsByName({ name }: { name: string }) {
+    try {
+      const products = await Products.find({
+        name: { $regex: name, $options: "i" },
+      }).exec();
+      return products;
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to fetch products by name: ${error.message}`);
+    }
+  }
+}

@@ -5,6 +5,7 @@ type Product {
   price: Float
   soldout: Soldout
   stores: [Store]!
+  categories: [Category]
 }
 
 type Store {
@@ -27,7 +28,8 @@ input ProductInput {
   description: String
   price: Float
   soldout: Soldout
-  stores: [StoreInput]!
+  stores: [StoreInput]
+  categories: [String]
 }
 
 enum Soldout {

@@ -17,6 +17,7 @@ import { UserProvider, useUser } from "./context/user";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import { Product } from "./pages/Product";
+import Products from "./pages/Products";
 import SignUp from "./pages/Signup";
 
 const palette = {
@@ -67,6 +68,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<Authetnicate />}></Route>
             </Routes>
