@@ -12,8 +12,16 @@ type Store {
   store: String
 }
 
+input ProductFilter {
+  category: ID
+  name: String
+  id: ID
+  # Add more filter fields as needed
+}
+
 type Query {
   getProduct(id: ID): Product
+  products(filter: ProductFilter): [Product]
   getAllProducts: [Product]
   getProductsByName(name: String): [Product]
 }

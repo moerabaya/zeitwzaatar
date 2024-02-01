@@ -25,7 +25,7 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../context/user";
 import { Cart } from "./Cart";
 
@@ -64,6 +64,8 @@ const Navigation = () => {
   const [open, setOpen] = React.useState(false);
   const { isAuth, loading, user } = useUser();
   const { mode } = useColorScheme();
+  const location = useLocation();
+  const page = location.pathname.replace(/\/$/, "");
 
   return (
     <Box
@@ -99,7 +101,7 @@ const Navigation = () => {
         <Button
           variant="plain"
           color="neutral"
-          aria-pressed="true"
+          aria-pressed={page === "" ? "true" : "false"}
           component="a"
           href="/"
           size="sm"
@@ -112,6 +114,7 @@ const Navigation = () => {
           color="neutral"
           component="a"
           href="/products"
+          aria-pressed={page === "/products" ? "true" : "false"}
           size="sm"
           sx={{ alignSelf: "center" }}
         >
@@ -122,6 +125,7 @@ const Navigation = () => {
           color="neutral"
           component="a"
           href="/about"
+          aria-pressed={page === "/about" ? "true" : "false"}
           size="sm"
           sx={{ alignSelf: "center" }}
         >
@@ -132,6 +136,7 @@ const Navigation = () => {
           color="neutral"
           component="a"
           href="/contact"
+          aria-pressed={page === "/contact" ? "true" : "false"}
           size="sm"
           sx={{ alignSelf: "center" }}
         >

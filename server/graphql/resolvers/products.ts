@@ -11,6 +11,7 @@ export class ProductResolvers {
       updateProduct: this.updateProduct,
       deleteProduct: this.deleteProduct,
       getProductsByName: this.getProductsByName,
+      products: this.products,
     };
   }
 
@@ -24,6 +25,45 @@ export class ProductResolvers {
         _id: { $in: product.categories },
       });
       return { ...JSON.parse(JSON.stringify(product)), categories };
+    } catch (error) {
+      if (error instanceof Error)
+        throw new Error(`Failed to fetch product: ${error.message}`);
+    }
+  }
+
+  async products({
+    filter,
+  }: {
+    filter: {
+      id: string;
+      name: string;
+      category: string;
+    };
+  }) {
+    try {
+      const { id, category, name } = filter;
+      const products = await Products.find({
+        ...(id ? { id } : undefined),
+        ...(name ? { name } : undefined),
+        ...(category ? { categories: category } : undefined),
+      }).exec();
+      if (!products) {
+        throw new Error(`Product with id ${""} not found`);
+      }
+
+      const updatedProdcts = products.map(async (product) => {
+        const categories = await Category.find({
+          _id: { $in: product.categories },
+        });
+
+        return new Object({
+          id: product.id,
+          ...product.toObject(),
+          categories,
+        });
+      });
+
+      return updatedProdcts;
     } catch (error) {
       if (error instanceof Error)
         throw new Error(`Failed to fetch product: ${error.message}`);
