@@ -24,7 +24,7 @@ export class ProductResolvers {
       const categories = await Category.find({
         _id: { $in: product.categories },
       });
-      return { ...JSON.parse(JSON.stringify(product)), categories };
+      return { id: product.id, ...product.toObject(), categories };
     } catch (error) {
       if (error instanceof Error)
         throw new Error(`Failed to fetch product: ${error.message}`);

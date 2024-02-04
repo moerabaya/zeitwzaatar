@@ -23,7 +23,7 @@ export const Product = () => {
   const { data, loading, error } = useQuery(GET_PRODUCT, {
     variables: { id: params.id },
   });
-  const { show } = useSnackbar();
+  const { show, showError } = useSnackbar();
   const handleAddToCart = async () => {
     try {
       await mutation({
@@ -36,6 +36,7 @@ export const Product = () => {
       show(`${data.getProduct.name} has been added to cart`);
     } catch (error) {
       console.error(error);
+      showError(error.message);
     }
   };
   if (loading) return `...loading`;
@@ -78,6 +79,7 @@ export const Product = () => {
               variant="solid"
               onClick={handleAddToCart}
               loading={cartLoading}
+              disabled={cartLoading}
             >
               Add to cart
             </Button>

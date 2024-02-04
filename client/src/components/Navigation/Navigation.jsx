@@ -1,3 +1,4 @@
+import HeadsetIcon from "@mui/icons-material/Headset";
 import PersonIcon from "@mui/icons-material/Person";
 import { Button, Stack, useColorScheme } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
@@ -18,7 +19,6 @@ import React from "react";
 
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -96,7 +96,7 @@ const Navigation = () => {
             borderRadius: "50%",
           }}
         >
-          <LanguageRoundedIcon />
+          <HeadsetIcon />
         </IconButton>
         <Button
           variant="plain"

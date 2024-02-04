@@ -71,10 +71,13 @@ export const useSnackbar = ({
   }, []);
 
   const show = (msg = message) => showSnackbar({ id, timeout, message: msg });
+  const showError = (msg = message) =>
+    showSnackbar({ id, timeout, color: "danger", message: msg });
   const hide = () => hideSnackbar(id);
 
   return {
     show,
+    showError,
     hide,
   };
 };

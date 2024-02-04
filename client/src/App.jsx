@@ -14,6 +14,7 @@ import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
 import { Navigation } from "./components/Navigation";
 import { SnackbarProvider } from "./context/snackbar";
 import { UserProvider, useUser } from "./context/user";
+import Checkout from "./pages/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import { Product } from "./pages/Product";
@@ -70,6 +71,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<Product />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route element={<Authetnicate />}></Route>
             </Routes>
           </BrowserRouter>

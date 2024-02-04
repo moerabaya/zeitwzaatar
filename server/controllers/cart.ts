@@ -66,6 +66,7 @@ export class Cart {
   async addToCart({ input }: { input: CartInput }, { req }: Context) {
     try {
       const productExists = await Products.findById(input.id);
+
       if (!productExists)
         return Promise.reject(new ServerError("PRODUCT_DOESNT_EXIST"));
 

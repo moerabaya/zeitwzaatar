@@ -1,6 +1,6 @@
 import { Add, Remove, ShoppingCart } from "@mui/icons-material";
 
-import { Input, ListDivider, ListItem, MenuItem } from "@mui/joy";
+import { Button, Input, ListDivider, ListItem, MenuItem } from "@mui/joy";
 import Box from "@mui/joy/Box";
 import Dropdown from "@mui/joy/Dropdown";
 import IconButton from "@mui/joy/IconButton";
@@ -10,6 +10,7 @@ import React, { useState } from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
 
+import { useNavigate } from "react-router-dom";
 import {
   ADD_TO_CART,
   GET_ALL_CART_ITEMS,
@@ -18,7 +19,7 @@ import {
 
 export const Cart = () => {
   const { data, loading } = useQuery(GET_ALL_CART_ITEMS);
-
+  const navigate = useNavigate();
   return (
     <Dropdown>
       <MenuButton
@@ -63,6 +64,13 @@ export const Cart = () => {
             Empty cart
           </ListItem>
         )}
+        <Button
+          variant="solid"
+          color="primary"
+          onClick={() => navigate("/checkout")}
+        >
+          Checkout
+        </Button>
       </Menu>
     </Dropdown>
   );
