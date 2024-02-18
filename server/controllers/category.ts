@@ -1,31 +1,32 @@
-import { Context } from "..";
-import { CategoryInput } from "../graphql/resolvers/types";
-import { default as CategorySchema } from "../models/Categories";
+import { type Context } from '..'
+import { type CategoryInput } from '../graphql/resolvers/types'
+import CategorySchema from '../models/Categories'
 
 class Category {
-  constructor() {
+  constructor () {
     return {
       createCategory: this.createCategory,
-      getCategories: this.getCategories,
-    };
+      getCategories: this.getCategories
+    }
   }
 
-  createCategory({ input }: { input: CategoryInput }, context: Context) {
-    return new Promise((resolve, reject) => {
+  async createCategory ({ input }: { input: CategoryInput }, context: Context) {
+    return await new Promise((resolve, reject) => {
       const category = new CategorySchema({
-        name: input.name,
-      });
-      category.id = category._id;
+        name: input.name
+      })
+      category.id = category._id
 
       category.save((error) => {
-        if (error) reject(error);
-        resolve(category);
-      });
-    });
+        if (error) reject(error)
+        resolve(category)
+      })
+    })
   }
-  getCategories(_: unknown, context: Context) {
-    return CategorySchema.find({});
+
+  getCategories (_: unknown, context: Context) {
+    return CategorySchema.find({})
   }
 }
 
-export default Category;
+export default Category

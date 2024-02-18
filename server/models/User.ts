@@ -1,47 +1,47 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 export const addressSchema = new mongoose.Schema({
   street: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
   postalCode: { type: String, required: true },
-  country: { type: String, required: true },
-});
+  country: { type: String, required: true }
+})
 
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
-    required: true,
+    required: true
   },
   lastname: {
     type: String,
-    required: true,
+    required: true
   },
   username: {
     type: String,
     required: true,
-    index: { unique: true },
+    index: { unique: true }
   },
   email: {
     type: String,
     required: true,
-    index: { unique: true },
+    index: { unique: true }
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   avatar: {
-    type: String,
+    type: String
   },
   address: [
     {
-      address: { type: addressSchema, required: true },
-    },
+      address: { type: addressSchema, required: true }
+    }
   ],
-  orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: "order" }],
-});
+  orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'order' }]
+})
 
-const Users = mongoose.model("user", userSchema);
+const Users = mongoose.model('user', userSchema)
 
-export { Users };
+export { Users }

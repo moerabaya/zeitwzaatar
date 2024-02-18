@@ -1,40 +1,40 @@
-import mongoose from "mongoose";
-import { addressSchema } from "./User";
+import mongoose from 'mongoose'
+import { addressSchema } from './User'
 
 const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    ref: 'User',
+    required: true
   },
   products: [
     {
       product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: true,
+        ref: 'Product',
+        required: true
       },
       quantity: {
         type: Number,
-        required: true,
-      },
-    },
+        required: true
+      }
+    }
   ],
   totalAmount: {
     type: Number,
-    required: true,
+    required: true
   },
   shippingAddress: {
     type: addressSchema,
-    required: true,
+    required: true
   },
   status: {
     type: String,
-    enum: ["pending", "completed", "cancelled"],
-    default: "pending",
-  },
-});
+    enum: ['pending', 'completed', 'cancelled'],
+    default: 'pending'
+  }
+})
 
-const Order = mongoose.model("order", orderSchema);
+const Order = mongoose.model('order', orderSchema)
 
-export default Order;
+export default Order
