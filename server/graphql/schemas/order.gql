@@ -1,0 +1,40 @@
+enum Status {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+type Address {
+  street: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
+type Order {
+  user: ID
+  products: [Product]
+  totalAmount: Float
+  shippingAddress: Address
+  status: Status
+}
+
+input OrderProduct {
+  id: ID
+  quantity: Int
+}
+
+input OrderInput {
+  user: ID
+  products: [OrderProduct]
+  shippingAddress: Address
+}
+
+type Query {
+  getOrders: [Order]
+}
+
+type Mutation {
+  createOrder(input: OrderInput): Order
+}

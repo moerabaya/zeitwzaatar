@@ -15,6 +15,7 @@ const categorySchema = readFileSync(
   join(__dirname, "schemas/category.gql"),
   "utf-8"
 );
+const orderSchema = readFileSync(join(__dirname, "schemas/order.gql"), "utf-8");
 
 const schema = makeExecutableSchema({
   typeDefs: [
@@ -23,6 +24,7 @@ const schema = makeExecutableSchema({
     uesrSchema,
     cartSchema,
     categorySchema,
+    orderSchema,
   ],
 });
 

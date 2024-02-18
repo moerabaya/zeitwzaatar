@@ -1,7 +1,7 @@
-import { Errors } from "../constants";
+import { Errors } from '../constants'
 
-export type ErrorCode = keyof typeof Errors;
+export type ErrorCode = keyof typeof Errors
 
 export const getErrorCode = (errorName: ErrorCode) => {
-  return Errors[errorName];
-};
+  return Errors[errorName]
+}

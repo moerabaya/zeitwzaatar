@@ -22,8 +22,12 @@ export class Cart {
 
       return cart?.products.map(async (item) => {
         const product = await Products.findById(item.id);
-        console.log({ ...item });
-        return { id: item.id, quantity: item.quantity, name: product?.name };
+        return {
+          id: item.id,
+          quantity: item.quantity,
+          name: product?.name,
+          price: product?.price,
+        };
       });
     } catch (error) {
       throw new ServerError("SERVER_ERROR");
@@ -35,7 +39,7 @@ export class Cart {
       let cart = await CartSchema.findOne({
         userId: req.session.userId,
       });
-      console.log(cart);
+
       if (!cart) return Promise.reject(new ServerError("PRODUCT_DOESNT_EXIST"));
 
       const product = cart?.products.find((p) => p.id.equals(input.id));

@@ -46,3 +46,22 @@ export type CategoryInput = {
   id: string;
   name: string;
 };
+
+export type Status = "pending" | "cancelled" | "completed";
+
+export type ProductOrder = {
+  id: string;
+  quantity: number;
+};
+
+export type OrderInput = {
+  products: ProductOrder[];
+  shippingAddress: string;
+};
+
+export type Order = {
+  user: string;
+  products: Product[];
+  totalAmount: string;
+  shippingAddress: string;
+};
