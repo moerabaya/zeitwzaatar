@@ -3,6 +3,7 @@
     "browser": true,
     "es2021": true
   },
+  "plugins": ["graphql"],
   "parser": "@typescript-eslint/parser",
   "extends": ["plugin:@typescript-eslint/recommended"],
   "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" },
@@ -20,5 +21,15 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.graphql", "*.gql"],
+      "parser": "graphql-eslint/parser",
+      "plugins": ["graphql"],
+      "rules": {
+        // Add any specific ESLint rules for GraphQL files
+      }
+    }
+  ]
 }

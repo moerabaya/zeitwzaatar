@@ -28,6 +28,10 @@ const orderSchema = new mongoose.Schema({
     type: addressSchema,
     required: true
   },
+  billingAddress: {
+    type: addressSchema,
+    required: true
+  },
   status: {
     type: String,
     enum: ['pending', 'completed', 'cancelled'],

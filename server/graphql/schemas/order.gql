@@ -16,6 +16,7 @@ type Order {
   user: ID
   products: [Product]
   totalAmount: Float
+  billingAddress: Address
   shippingAddress: Address
   status: Status
 }
@@ -25,10 +26,19 @@ input OrderProduct {
   quantity: Int
 }
 
+input AddressInput {
+  street: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
 input OrderInput {
   user: ID
   products: [OrderProduct]
-  shippingAddress: Address
+  billingAddress: AddressInput
+  shippingAddress: AddressInput
 }
 
 type Query {

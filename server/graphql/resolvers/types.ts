@@ -54,14 +54,23 @@ export interface ProductOrder {
   quantity: number
 }
 
+type Address = {
+  street: string
+  city: string
+  state: string
+  postalCode: string
+  country: string
+}
 export interface OrderInput {
   products: ProductOrder[]
-  shippingAddress: string
+  shippingAddress: Address
+  billingAddress: Address
 }
 
 export interface Order {
   user: string
   products: Product[]
   totalAmount: string
-  shippingAddress: string
+  shippingAddress: Address
+  billingAddress: Address
 }

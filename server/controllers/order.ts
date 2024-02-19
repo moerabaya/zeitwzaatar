@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import { type Context } from '..'
 import { type OrderInput } from '../graphql/resolvers/types'
 import { Cart as CartSchema } from '../models/Cart'
@@ -13,14 +12,9 @@ class Order {
   }
 
   async createOrder ({ input }: { input: OrderInput }, context: Context) {
-    return await new Promise(async (resolve, reject) => {
+    console.log('create order')
+    return new Promise(async (resolve, reject) => {
       try {
-        const cart = await CartSchema.findOne({
-          userId: context.req.session.userId
-        })
-        const productIds = cart?.products.map(
-          (item) => new mongoose.Types.ObjectId(item.id)
-        )
         const productTotal = await CartSchema.aggregate([
           {
             $unwind: '$products'
@@ -55,14 +49,16 @@ class Order {
         const order = new OrderSchema({
           user: context.req.session.userId,
           shippingAddress: input.shippingAddress,
-          products: input.products
+          billingAddress: input.billingAddress,
+          products: input.products,
+          totalAmount: productTotal[0].totalSum,
         })
         order.id = order._id
-
-        // order.save((error) => {
-        //   if (error) reject(error);
-        //   resolve(order);
-        // });
+        console.log(order)
+        order.save((error) => {
+          if (error) reject(error);
+        });
+        resolve(order);
       } catch (error) {
         console.error(error)
       }

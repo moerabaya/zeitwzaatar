@@ -1,7 +1,7 @@
 {
   "watch": ["server"],
   "ext": "ts, graphql, gql",
-  "exec": "ts-node ./server/index.ts && eslint server --ext .ts",
+  "exec": "ts-node ./server/index.ts; eslint server --quiet --ext .ts",
   "ignore": ["server/**/*.spec.ts", "node_modules"],
   "env": {
     "NODE_ENV": "development"
