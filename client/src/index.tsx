@@ -1,12 +1,12 @@
 import { ApolloProvider } from "@apollo/client";
 import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import ReactDOM, { Container } from "react-dom/client";
+import App from "./App.tsx";
 import client from "./config/apollo";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root") as Container);
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>

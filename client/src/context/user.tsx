@@ -1,3 +1,4 @@
+import React from 'react'
 import { useQuery } from "@apollo/client";
 import { createContext, useContext } from "react";
 import { USER } from "../schemas/queries/user";

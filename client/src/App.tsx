@@ -13,7 +13,7 @@ import Login from "./pages/Login";
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
 import { Navigation } from "./components/Navigation";
 import { SnackbarProvider } from "./context/snackbar";
-import { UserProvider, useUser } from "./context/user";
+import { UserProvider, useUser } from "./context/user.tsx";
 import Checkout from "./pages/Checkout/Checkout";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
@@ -34,18 +34,6 @@ const palette = {
     800: "#243116",
     900: "#161d0d",
   },
-  // neutral: {
-  //   50: "#fdf8f4",
-  //   100: "#faeade",
-  //   200: "#f3cfb2",
-  //   300: "#ecb386",
-  //   400: "#e18a44",
-  //   500: "#d17021",
-  //   600: "#8f4c17",
-  //   700: "#633510",
-  //   800: "#371d09",
-  //   900: "#0b0602",
-  // },
 };
 
 const bootstrapTheme = extendTheme({
@@ -72,7 +60,7 @@ function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route element={<Authetnicate />}></Route>
+              <Route element={<Authenticate />}></Route>
             </Routes>
           </BrowserRouter>
         </UserProvider>
@@ -83,7 +71,7 @@ function App() {
 
 export { App as default };
 
-const Authetnicate = () => {
+const Authenticate = () => {
   const navigate = useNavigate();
   const { isAuth } = useUser();
   if (!isAuth)

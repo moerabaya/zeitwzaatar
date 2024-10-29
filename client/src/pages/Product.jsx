@@ -50,7 +50,7 @@ export const Product = () => {
         <AspectRatio minHeight="100vh">
           <img
             component="img"
-            src={"https://source.unsplash.com/random?olive-oil"}
+            src={"https://picsum.photos/seed/picsum/200/300"}
           />
         </AspectRatio>
       </Grid>

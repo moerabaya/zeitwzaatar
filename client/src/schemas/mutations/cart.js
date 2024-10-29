@@ -24,6 +24,7 @@ export const GET_ALL_CART_ITEMS = gql`
       id
       quantity
       name
+      price
     }
   }
 `;

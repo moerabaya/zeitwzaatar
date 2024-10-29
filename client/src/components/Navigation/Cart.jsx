@@ -1,12 +1,20 @@
-import { Add, Remove, ShoppingCart } from "@mui/icons-material";
+import { Add, Delete, Remove, ShoppingCart } from "@mui/icons-material";
 
-import { Button, Input, ListDivider, ListItem, MenuItem } from "@mui/joy";
+import {
+  AspectRatio,
+  Button,
+  Input,
+  ListDivider,
+  ListItem,
+  MenuItem,
+  Typography,
+} from "@mui/joy";
 import Box from "@mui/joy/Box";
 import Dropdown from "@mui/joy/Dropdown";
 import IconButton from "@mui/joy/IconButton";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -19,6 +27,7 @@ import {
 
 export const Cart = () => {
   const { data, loading } = useQuery(GET_ALL_CART_ITEMS);
+
   const navigate = useNavigate();
   return (
     <Dropdown>
@@ -56,6 +65,7 @@ export const Cart = () => {
         >
           Shopping Cart
         </MenuItem>
+
         <ListDivider />
         {!loading && data?.getAllCartItems?.length ? (
           data?.getAllCartItems.map((item) => <CartItem item={item} />)
@@ -64,13 +74,30 @@ export const Cart = () => {
             Empty cart
           </ListItem>
         )}
-        <Button
-          variant="solid"
-          color="primary"
-          onClick={() => navigate("/checkout")}
-        >
-          Checkout
-        </Button>
+        {!loading && data?.getAllCartItems?.length && (
+          <>
+            <ListDivider />
+            <ListItem>
+              <strong>Total:</strong>{" "}
+              {new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "EUR",
+              }).format(
+                data?.getAllCartItems.reduce(
+                  (acc, a) => acc + a.quantity * a.price,
+                  0
+                )
+              )}
+            </ListItem>
+            <Button
+              variant="solid"
+              color="primary"
+              onClick={() => navigate("/checkout")}
+            >
+              Checkout
+            </Button>
+          </>
+        )}
       </Menu>
     </Dropdown>
   );
@@ -80,6 +107,7 @@ const CartItem = ({ item }) => {
   const [addToCart] = useMutation(ADD_TO_CART);
   const [removeFromCart] = useMutation(REMOVE_FROM_CART);
   const [value, setValue] = useState(item.quantity);
+
   const deleteCartItem = (id, quantity = 1) => {
     setValue((value) => value - quantity);
     removeFromCart({
@@ -90,6 +118,7 @@ const CartItem = ({ item }) => {
       refetchQueries: [GET_ALL_CART_ITEMS],
     });
   };
+
   const addCartItem = (id, quantity = 1) => {
     setValue((value) => value + quantity);
     addToCart({
@@ -122,25 +151,58 @@ const CartItem = ({ item }) => {
   };
 
   return (
-    <ListItem key={item.id} sx={{ minWidth: 200 }}>
-      <Box sx={{ flex: "1", width: "100%" }}>{item.name}</Box>
-      <IconButton onClick={() => deleteCartItem(item.id)}>
-        <Remove />
-      </IconButton>
-      <Input
-        value={value}
-        onChange={(event) =>
-          setValue(event.target.value ? parseInt(event.target.value) : 0)
-        }
-        onBlur={(event) => modifyCartItem(event, item)}
-        sx={{
-          width: "50px",
-          appearance: "none",
-        }}
-      />
-      <IconButton onClick={() => addCartItem(item.id)}>
-        <Add />
-      </IconButton>
+    <ListItem key={item.id} sx={{ minWidth: 230, alignItems: "flex-start" }}>
+      <Box sx={{ flex: "0 0 65px", marginTop: '0.5rem' }}>
+        <AspectRatio>
+          <img
+            component="img"
+            src={"https://picsum.photos/300"}
+            alt={item.name}
+          />
+        </AspectRatio>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingInlineStart: '0.5rem' }}>
+        <Typography level="h6">{item.category}</Typography>
+        <Typography level="h6">{item.name}</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: 'space-between',
+            gap: '0.5rem'
+          }}
+        >
+          <IconButton onClick={() => deleteCartItem(item.id)}>
+            <Remove />
+          </IconButton>
+          <Input
+            value={value}
+            onChange={(event) =>
+              setValue(event.target.value ? parseInt(event.target.value) : 0)
+            }
+            onBlur={(event) => modifyCartItem(event, item)}
+            sx={{ width: "50px" }}
+          />
+          <IconButton onClick={() => addCartItem(item.id)}>
+            <Add />
+          </IconButton>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: '0.5rem'
+          }}
+        >
+          <Typography level="h6" sx={{ flex: '1', justifyContent: 'stretch', alignItems: 'stretch' }}>
+            {new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "EUR",
+            }).format(item.price)}
+          </Typography>
+          <IconButton onClick={() => removeFromCart(item.id)} size="small">
+            <Delete />
+          </IconButton>
+        </Box>
+      </Box>
     </ListItem>
   );
 };

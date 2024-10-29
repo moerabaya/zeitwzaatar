@@ -26,7 +26,7 @@ import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import { Link, useLocation } from "react-router-dom";
-import { useUser } from "../../context/user";
+import { useUser } from "../../context/user.tsx";
 import { Cart } from "./Cart";
 
 function ColorSchemeToggle() {

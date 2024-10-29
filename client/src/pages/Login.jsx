@@ -19,7 +19,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../context/snackbar";
-import { useUser } from "../context/user";
+import { useUser } from "../context/user.tsx";
 import { LOGIN } from "../schemas/mutations/login";
 
 function Copyright(props) {
@@ -62,7 +62,7 @@ export default function SignIn() {
           email: data.email,
           password: data.password,
         },
-      }).then(() => {
+      }).then((res) => {
         refetch();
         navigate("/", {
           replace: true,
